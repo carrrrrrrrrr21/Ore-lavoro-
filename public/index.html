@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OreLavoro</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icon-192.png">
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; margin: 0; background: #f4f6f8; color: #17212b; }
+    header { background: #0b57d0; color: white; padding: 18px; }
+    main { padding: 16px; max-width: 640px; margin: auto; }
+    section { background: white; border-radius: 14px; padding: 16px; margin-bottom: 14px; box-shadow: 0 2px 8px #0001; }
+    h2 { margin-top: 0; font-size: 18px; }
+    label { display: block; margin: 10px 0 4px; font-weight: 600; }
+    input, select, button { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ccd4dc; font-size: 16px; }
+    button { background: #0b57d0; color: white; border: 0; font-weight: 700; margin-top: 12px; }
+    button.secondary { background: #e8eaed; color: #17212b; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .day { background: #eef2f6; border-radius: 8px; padding: 8px 4px; text-align: center; font-size: 13px; min-height: 58px; }
+    .day.work { background: #d7e7ff; }
+    .day.today { outline: 2px solid #0b57d0; }
+    .small { font-size: 13px; color: #57606a; }
+    .hidden { display: none; }
+    .ok { color: #0a7d33; font-weight: 700; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>OreLavoro</h1>
+  <p class="small" style="color:#dbe7ff">Registrazione turni e straordinari</p>
+</header>
+
+<main>
+  <section id="setup" class="hidden">
+    <h2>Imposta il tuo orario base</h2>
+    <label>Ora di inizio</label>
+    <input type="time" id="baseStart">
+    <label>Ora di fine</label>
+    <input type="time" id="baseEnd">
+    <label>Pausa in minuti</label>
+    <input type="number" id="baseBreak" min="0" value="60">
+    <button onclick="saveSettings()">Salva orario</button>
+  </section>
+
+  <section id="today">
+    <h2>Oggi</h2>
+    <p id="todayDate" class="small"></p>
+    <label>Ora di entrata</label>
+    <input type="time" id="clockIn">
+    <label>Ora di uscita</label>
+    <input type="time" id="clockOut">
+    <label>
+      <input type="checkbox" id="abbinamento" style="width:auto">
+      Ho fatto l’abbinamento
+    </label>
+    <div class="row">
+      <button onclick="saveDay()">Salva giornata</button>
+      <button class="secondary" onclick="clearDay()">Cancella giornata</button>
+    </div>
+    <p id="dayResult"></p>
+  </section>
+
+  <section>
+    <h2>Calendario</h2>
+    <div class="row">
+      <button class="secondary" onclick="changeMonth(-1)">← Mese precedente</button>
+      <button class="secondary" onclick="changeMonth(1)">Mese successivo →</button>
+    </div>
+    <h3 id="monthTitle"></h3>
+    <div class="calendar" id="calendar"></div>
+  </section>
+
+  <section>
+    <h2>Riepilogo mensile</h2>
+    <div id="summary"></div>
+  </section>
+
+  <section>
+    <h2>Backup</h2>
+    <div class="row">
+      <button class="secondary" onclick="exportData()">Esporta backup</button>
+      <label class="secondary" style="display:block;text-align:center;padding:12px;border-radius:10px;background:#e8eaed">
+        Importa backup
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+      </label>
+    </div>
+  </section>
+</main>
+
+<script src="/app.js"></script>
+</body>
+  </html>
